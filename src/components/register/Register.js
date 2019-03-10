@@ -100,44 +100,33 @@ class Register extends React.Component {
             .then(response => {
                 console.log("Register response: "+response);
                 console.log("Register response status: "+response.status);
-                if (!response.ok){
+                if (response.status == 409){
                     console.log("response.status: "+response.status);
-                    alert("Throwing response, because !response.ok");
                     throw response;
                 }
-                response.json();
+                return response.json();
 
             })
             .then(returnedUser => {
                 console.log("Register returnedUser: "+returnedUser);
-                //console.log(this.props);
-
                 const user = new User(returnedUser);
                 console.log("Register new user: "+user);
+                console.log("Register new user token: "+user.token);
                 //localStorage.setItem("token", user.token)
-
-
-                // user login successfully worked --> navigate to the route /game in the GameRouter
+                // register of new user successfully worked --> navigate to the route /game in the GameRouter
                 this.props.history.push(`/login`);
             })
             .catch(err => {
-                console.log("reaching the .catch block! err: ", err.status);
-                this.props.history.push("/register");
+                console.log("reaching the .catch block! err: ", err);
                 if (err.status === 409){
-                    alert("this username has been registered before, try a new one: ");
+                    alert("Please take another username, this one is already taken!");
                     this.props.history.push("/register");
+                } else if (err.message.match(/Failed to fetch/)) {
+                    alert("The server cannot be reached. Did you start it?");
+                } else {
+                    alert(`Something went wrong during the login: ${err.message}`);
                 }
 
-                if (err.message.match(/Failed to fetch/)) {
-                    alert("The server cannot be reached. Did you start it?");
-                } else if(err.message.match(/409 username already taken/)){
-                    alert("Please take another username, this one's already taken!");
-                    this.props.history.push(`/register`);
-                }
-                else {
-                    alert(`Something went wrong during the login: ${err.message}`);
-                    // ******** catch register error here and redirect to register screen
-                }
             });
     }
     /**
@@ -163,6 +152,7 @@ class Register extends React.Component {
     }
 
     render() {
+        console.log("Register renders! ")
         return (
             <BaseContainer>
                 <FormContainer>
