@@ -38,6 +38,7 @@ class Game extends React.Component {
   }
 
   componentDidMount() {
+    // is localhost8080 on own machine
     fetch(`${getDomain()}/users`, {
       method: "GET",
       headers: {
@@ -46,10 +47,11 @@ class Game extends React.Component {
     })
       .then(response => response.json())
       .then(async users => {
+        console.log("Game.js users fetched: "+users[0]);
         // delays continuous execution of an async operation for 0.8 seconds.
         // This is just a fake async call, so that the spinner can be displayed
         // feel free to remove it :)
-        await new Promise(resolve => setTimeout(resolve, 800));
+        //await new Promise(resolve => setTimeout(resolve, 800));
 
         this.setState({ users });
       })
@@ -71,7 +73,7 @@ class Game extends React.Component {
             <Users>
               {this.state.users.map(user => {
                 return (
-                  <PlayerContainer key={user.id}>
+                    <PlayerContainer key={user.id}>
                     <Player user={user} />
                   </PlayerContainer>
                 );

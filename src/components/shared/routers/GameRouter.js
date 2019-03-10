@@ -10,6 +10,7 @@ const Container = styled.div`
 
 class GameRouter extends React.Component {
   render() {
+      console.log("GameRouter props.base: "+this.props.base);
     /**
      * "this.props.base" is "/app" because as been passed as a prop in the parent of GameRouter, i.e., App.js
      */
@@ -20,7 +21,6 @@ class GameRouter extends React.Component {
           path={`${this.props.base}/dashboard`}
           render={() => <Game />}
         />
-
         <Route
           exact
           path={`${this.props.base}`}

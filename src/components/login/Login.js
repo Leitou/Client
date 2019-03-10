@@ -75,33 +75,49 @@ class Login extends React.Component {
   constructor() {
     super();
     this.state = {
-      name: null,
-      username: null
+      username: null,
+      password: null,
+
     };
   }
   /**
    * HTTP POST request is sent to the backend.
    * If the request is successful, a new user is returned to the front-end and its token is stored in the localStorage.
    */
+  // change this method. checking whether username matches the password on serverside, if true do not create new user,
+  // otherwise return existing user
+  // if a user is returned successfully:
+  //
   login() {
     fetch(`${getDomain()}/users`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
+      // serialize data into a json string
       body: JSON.stringify({
         username: this.state.username,
-        name: this.state.name
+        password: this.state.password,
+
       })
     })
-      .then(response => response.json())
+      .then(response => {
+        console.log("Login response: "+response);
+        console.log("Login response status: "+response.status);
+        return response.json();
+      })
       .then(returnedUser => {
+        console.log("returnedUser: "+returnedUser);
+        //console.log(this.props);
         const user = new User(returnedUser);
-        // store the token into the local storage
+        console.log("Login user: "+user);
+        console.log("Login, local-storing token: "+user.token);
         localStorage.setItem("token", user.token);
+
         // user login successfully worked --> navigate to the route /game in the GameRouter
         this.props.history.push(`/game`);
       })
+        // handle here case if server does return an error message
       .catch(err => {
         if (err.message.match(/Failed to fetch/)) {
           alert("The server cannot be reached. Did you start it?");
@@ -110,7 +126,6 @@ class Login extends React.Component {
         }
       });
   }
-
   /**
    *  Every time the user enters something in the input field, the state gets updated.
    * @param key (the key of the state for identifying the field that needs to be updated)
@@ -129,7 +144,9 @@ class Login extends React.Component {
    * You may call setState() immediately in componentDidMount().
    * It will trigger an extra rendering, but it will happen before the browser updates the screen.
    */
-  componentDidMount() {}
+  componentDidMount() {
+    console.log("Login component mounted");
+  }
 
   render() {
     return (
@@ -143,16 +160,17 @@ class Login extends React.Component {
                 this.handleInputChange("username", e.target.value);
               }}
             />
-            <Label>Name</Label>
+            <Label>Password</Label>
             <InputField
+                type="password"
               placeholder="Enter here.."
               onChange={e => {
-                this.handleInputChange("name", e.target.value);
+                this.handleInputChange("password", e.target.value);
               }}
             />
             <ButtonContainer>
               <Button
-                disabled={!this.state.username || !this.state.name}
+                disabled={!this.state.username || !this.state.password}
                 width="50%"
                 onClick={() => {
                   this.login();

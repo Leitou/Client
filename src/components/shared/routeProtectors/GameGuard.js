@@ -11,8 +11,12 @@ import { Redirect } from "react-router-dom";
  * @param props
  */
 export const GameGuard = props => {
+
+  console.log("GameGuard has a token: "+localStorage.getItem("token"));
   if (localStorage.getItem("token")) {
+
     return props.children;
-  }
-  return <Redirect to={"/login"} />;
+}
+  console.log("redirecting to /register");
+  return <Redirect to={"/register"} />; // happens initially, when there have not been users registered.
 };
