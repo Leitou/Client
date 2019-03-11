@@ -89,10 +89,13 @@ class Profile extends React.Component {
         return (
 
             <Container>
-                <h2>Happy Coding! </h2>
-                <p>Get user with  from secure end point:</p>
+                <h2>Profile</h2>
+
                 {!this.state.user ? (
+                    <div>
+                    <p>Get user with  from secure end point:</p>
                     <Spinner />
+                    </div>
                 ) : (
                     <div>
                         Username:<br/>{this.state.user.username}<br/>
