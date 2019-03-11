@@ -121,7 +121,7 @@ class Register extends React.Component {
             .catch(err => {
                 console.log("reaching the .catch block! err: ", err);
                 if (err.status === 409){
-                    alert("Please take another username, this one is already taken!");
+                    alert("Please take another username, this one is already taken!"+err.message);
                     this.props.history.push("/register");
                 } else if (err.message.match(/Failed to fetch/)) {
                     alert("The server cannot be reached. Did you start it?");

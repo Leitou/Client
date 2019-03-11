@@ -4,6 +4,7 @@ import {Spinner} from "../../views/design/Spinner";
 import {Button} from "../../views/design/Button";
 import styled from "styled-components";
 import {BaseContainer} from "../../helpers/layout";
+import NavLink from "react-router-dom/es/NavLink";
 
 
 const FormContainer = styled.div`
@@ -61,9 +62,7 @@ export class Profile extends React.Component {
         user: null,
         uName: null,
         bDate: null,
-        id: null,
-        token: null
-
+        didUpdate: false
     }
 
     componentDidMount() {
@@ -76,7 +75,7 @@ export class Profile extends React.Component {
             }
         })
             .then(response => {
-                console.log(response);
+                console.log("Profile response to fetch profile GET: "+response);
                 if (response.status === 404){
                     console.log("Profile GET response.status: "+response.status);
                     throw response;
@@ -84,7 +83,7 @@ export class Profile extends React.Component {
                 return response.json();
             })
             .then(async user => {
-                console.log("Profile GET request findById() user:"+user.name+user.username+user.birthDate+user.creationDate);
+                console.log("Profile GET request (db findById()) user:\n"+user.name+user.username+user.birthDate+user.creationDate);
                 // delays continuous execution of an async operation for 0.8 seconds.
                 // This is just a fake async call, so that the spinner can be displayed
                 // feel free to remove it :)
@@ -114,30 +113,33 @@ export class Profile extends React.Component {
                 username: this.state.uName,
                 birthDate: this.state.bDate,
                 token: this.state.user.token,
-                id: this.state.user.id
             })
 
         })
             .then(response => {
                 console.log("Profile PUT response: "+response);
-                if (response.status === 404){
+                if (response.status !== 204){
                     console.log("Profile PUT response.status: "+response.status);
                     throw response;
+                } else {
+                    console.log("Profile of user gets updated! "+response.status);
+                    this.componentDidMount();
+                    // this.setState({didUpdate: true});
+                    // this.props.history.push(`/game/profile/${this.state.user.id}`)
                 }
-                return response.json();
             })
-            .then(async user => {
-                console.log("Profile PUT request findById() user:"+user.name+user.username+user.birthDate+user.creationDate);
-                // delays continuous execution of an async operation for 0.8 seconds.
-                // This is just a fake async call, so that the spinner can be displayed
-                // feel free to remove it :)
-                //await new Promise(resolve => setTimeout(resolve, 800));
-                this.setState({ user });
-            })
+            // .then(async user => {
+            //     console.log("Profile PUT request findById() user:"+user.name+user.username+user.birthDate+user.creationDate);
+            //     // delays continuous execution of an async operation for 0.8 seconds.
+            //     // This is just a fake async call, so that the spinner can be displayed
+            //     // feel free to remove it :)
+            //     //await new Promise(resolve => setTimeout(resolve, 800));
+            //     this.setState({ user });
+            // })
             .catch(err => {
                 console.log(err);
                 if (err.status === 404){
-                    alert("This user does not exist");
+                    alert("User not found");
                     this.props.history.push("/game");
                 } else {
                     alert("Something went wrong fetching the users: " + err);
@@ -156,7 +158,7 @@ export class Profile extends React.Component {
         return (
                 <div>
                 <h2>Profile</h2>
-                {!this.state.user ? (
+                {!this.state.user && this.state.didUpdate === false ? (
                     <div>
                         <p>Get user data from secure end point:</p>
                         <Spinner />
@@ -189,6 +191,7 @@ export class Profile extends React.Component {
                                 }}
                             />
                                 <ButtonContainer>
+
                                     <Button
                                         disabled={!this.state.uName || !this.state.bDate}
                                         width="50%"
@@ -198,6 +201,7 @@ export class Profile extends React.Component {
                                     >
                                         Edit
                                     </Button>
+
                                 </ButtonContainer>
                             </div>
                         ): (

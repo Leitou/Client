@@ -17,6 +17,7 @@ class GameRouter extends React.Component {
      */
     return (
       <Container>
+
         <Route
             path='/game/profile/:id'
             component={Profile}
