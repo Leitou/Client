@@ -6,6 +6,7 @@ import { LoginGuard } from "../routeProtectors/LoginGuard";
 import Login from "../../login/Login";
 import Register from "../../register/Register";
 import { RegisterGuard } from "../routeProtectors/RegisterGuard";
+import {Profile} from "../../profile/Profile";
 
 /**
  * Main router of your application.
@@ -18,6 +19,8 @@ import { RegisterGuard } from "../routeProtectors/RegisterGuard";
  */
 class AppRouter extends React.Component {
   render() {
+      const currentPath = this.props.path;
+      console.log("current path: "+currentPath);
     return (
       <BrowserRouter>
         <Switch>
@@ -48,6 +51,7 @@ class AppRouter extends React.Component {
                 </LoginGuard>
               )}
             />
+
             <Route path="/" exact render={() => <Redirect to={"/register"} />} />
           </div>
         </Switch>

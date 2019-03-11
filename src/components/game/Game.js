@@ -5,7 +5,8 @@ import { getDomain } from "../../helpers/getDomain";
 import Player from "../../views/Player";
 import { Spinner } from "../../views/design/Spinner";
 import { Button } from "../../views/design/Button";
-import { withRouter } from "react-router-dom";
+import {NavLink, Redirect, withRouter} from "react-router-dom";
+import Link from "react-router-dom/es/Link";
 
 const Container = styled(BaseContainer)`
   color: white;
@@ -37,17 +38,24 @@ class Game extends React.Component {
     this.props.history.push("/login");
   }
 
+  examineProfile(userId){
+    this.props.history.push(`/game/profile/${userId}`);
+    console.log("");
+    console.log("Game history current pathname after examineProfile: "+this.props.history.location.pathname);
+  }
+
+
   componentDidMount() {
-    // is localhost8080 on own machine
+    // localhost8080 on machine
     fetch(`${getDomain()}/users`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json"
       }
     })
-      .then(response => response.json())
+      .then(response => {return response.json();})
       .then(async users => {
-        console.log("Game.js users fetched: "+users[0]);
+        console.log("Game.js GET request findAll() "+users);
         // delays continuous execution of an async operation for 0.8 seconds.
         // This is just a fake async call, so that the spinner can be displayed
         // feel free to remove it :)
@@ -62,6 +70,7 @@ class Game extends React.Component {
   }
 
   render() {
+    console.log("Game renders");
     return (
       <Container>
         <h2>Happy Coding! </h2>
@@ -73,9 +82,15 @@ class Game extends React.Component {
             <Users>
               {this.state.users.map(user => {
                 return (
+                    <Button width="100%"
+                            onClick={() => {
+                              this.examineProfile(user.id);
+                            }}
+                    >
                     <PlayerContainer key={user.id}>
                     <Player user={user} />
-                  </PlayerContainer>
+                    </PlayerContainer>
+                    </Button>
                 );
               })}
             </Users>
