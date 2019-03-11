@@ -96,13 +96,13 @@ class Register extends React.Component {
                 username: this.state.username,
                 name: this.state.name,
                 password: this.state.password,
-                birth: this.state.birthDate
+                birthDate: this.state.birthDate
             })
         })
             .then(response => {
                 console.log("Register response: "+response);
                 console.log("Register response status: "+response.status);
-                if (response.status == 409){
+                if (response.status === 409){
                     console.log("response.status: "+response.status);
                     throw response;
                 }

@@ -5,8 +5,7 @@ import { getDomain } from "../../helpers/getDomain";
 import Player from "../../views/Player";
 import { Spinner } from "../../views/design/Spinner";
 import { Button } from "../../views/design/Button";
-import {NavLink, Redirect, withRouter} from "react-router-dom";
-import Link from "react-router-dom/es/Link";
+import {Redirect, withRouter} from "react-router-dom";
 
 const Container = styled(BaseContainer)`
   color: white;
@@ -35,6 +34,7 @@ class Game extends React.Component {
 
   logout() {
     localStorage.removeItem("token");
+    // call to backend to set userstatus to offline... -> fetch post
     this.props.history.push("/login");
   }
 

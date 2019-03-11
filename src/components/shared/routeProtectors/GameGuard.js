@@ -16,7 +16,8 @@ export const GameGuard = props => {
   if (localStorage.getItem("token")) {
 
     return props.children;
-}
+  }
+  alert("Please register & login first!");
   console.log("GameGuard redirecting to /register");
   return <Redirect to={"/register"} />; // happens initially, when there have not been users registered.
 };

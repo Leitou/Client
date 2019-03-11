@@ -6,7 +6,6 @@ import { LoginGuard } from "../routeProtectors/LoginGuard";
 import Login from "../../login/Login";
 import Register from "../../register/Register";
 import { RegisterGuard } from "../routeProtectors/RegisterGuard";
-import {Profile} from "../../profile/Profile";
 
 /**
  * Main router of your application.
