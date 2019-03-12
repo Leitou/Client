@@ -107,7 +107,6 @@ class Register extends React.Component {
                     throw response;
                 }
                 return response.json();
-
             })
             .then(returnedUser => {
                 console.log("Register returnedUser: "+returnedUser);

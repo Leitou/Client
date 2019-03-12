@@ -3,9 +3,6 @@ import {getDomain} from "../../helpers/getDomain";
 import {Spinner} from "../../views/design/Spinner";
 import {Button} from "../../views/design/Button";
 import styled from "styled-components";
-import {BaseContainer} from "../../helpers/layout";
-import NavLink from "react-router-dom/es/NavLink";
-
 
 const FormContainer = styled.div`
   margin-top: 2em;
@@ -62,7 +59,6 @@ export class Profile extends React.Component {
         user: null,
         uName: null,
         bDate: null,
-        didUpdate: false
     }
 
     componentDidMount() {
@@ -124,7 +120,6 @@ export class Profile extends React.Component {
                 } else {
                     console.log("Profile of user gets updated! "+response.status);
                     this.componentDidMount();
-                    // this.setState({didUpdate: true});
                     // this.props.history.push(`/game/profile/${this.state.user.id}`)
                 }
             })
