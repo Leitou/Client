@@ -153,7 +153,7 @@ export class Profile extends React.Component {
         return (
                 <div>
                 <h2>Profile</h2>
-                {!this.state.user && this.state.didUpdate === false ? (
+                {!this.state.user ? (
                     <div>
                         <p>Get user data from secure end point:</p>
                         <Spinner />
