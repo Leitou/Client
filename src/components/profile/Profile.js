@@ -133,9 +133,14 @@ export class Profile extends React.Component {
             // })
             .catch(err => {
                 console.log(err);
+                if (err.status === 409){
+                    alert("username already taken");
+                    return;
+                }
                 if (err.status === 404){
                     alert("User not found");
                     this.props.history.push("/game");
+                    return;
                 } else {
                     alert("Something went wrong fetching the users: " + err);
                 }
