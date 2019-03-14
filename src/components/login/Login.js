@@ -104,6 +104,8 @@ class Login extends React.Component {
       .then(response => {
         console.log("Login response: "+response);
         console.log("Login response status: "+response.status);
+        if (response.status === 409 || response.status === 403)
+          throw response;
         return response.json();
       })
       .then(returnedUser => {
@@ -120,6 +122,13 @@ class Login extends React.Component {
       })
         // handle here case if server does return an error message
       .catch(err => {
+        if (err.status === 409){
+          alert("Password or username is incorrect");
+          return;
+        } else if (err.status === 403){
+          alert("Please register first before trying to login");
+          return;
+        }
         if (err.message.match(/Failed to fetch/)) {
           alert("The server cannot be reached. Did you start it?");
         } else {
